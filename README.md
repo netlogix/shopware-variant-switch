@@ -20,9 +20,14 @@
 
 ## Requirements
 
-| Version 	  | Requirements               	|
-|------------|----------------------------	|
-| 1.1.0    	 | Shopware 6.4 >=	            |
+| Version 	  | Requirements               	 |
+|------------|------------------------------|
+| 1.1.0    	 | Shopware 6.4 >=	             |
+| 1.5.0    	 | Shopware 6.5 >=	             |
+
+### Important note
+For this plugin to work the Storefront presentationof products must be set to Display Single Product > Variant
+in the Product Listings Tab
 
 ## License
     
