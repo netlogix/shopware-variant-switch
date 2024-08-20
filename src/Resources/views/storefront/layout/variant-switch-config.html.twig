@@ -7,6 +7,10 @@
     window.sasPreviewVariantOnHover = true;
     {% endif %}
 
+    {% if config('SasVariantSwitch.config.showGalleryOnProductCard') %}
+    window.sasShowGalleryOnListingPage = true;
+    {% endif %}
+
     {% if config('SasVariantSwitch.config.showOnOffCanvasCart') %}
     window.sasShowOnOffCanvasCart = true;
     {% endif %}

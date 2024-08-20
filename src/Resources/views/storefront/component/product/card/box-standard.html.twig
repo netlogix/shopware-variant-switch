@@ -1,5 +1,40 @@
 {% sw_extends '@Storefront/storefront/component/product/card/box-standard.html.twig' %}
 
+{% block component_product_box_image %}
+    {% if product.media.count > 0 and config('SasVariantSwitch.config.showGalleryOnProductCard') %}
+        {% sw_include '@Storefront/storefront/component/product/card/listing-gallery.html.twig' %}
+    {% else %}
+        {% sw_icon 'placeholder' style {
+            size: 'fluid',
+            class: 'tns-item',
+            attributes: {
+                'data-link': seoUrl('frontend.detail.page', { productId: product.id }),
+            }
+        } %}
+    {% endif %}
+
+
+    {% if product.extensions.groups %}
+        <div data-wrapper-id="sas-product-configurator-group-wrapper-{{ product.id }}" data-variant-hover-switch="true" data-variant-hover-switch-options="{{ variantHoverSwitchOptions|json_encode }}">
+            {% for group in product.extensions.groups %}
+                {% set hideOnListing = group.hideOnListing is defined and group.hideOnListing == true %}
+
+                {% if group.customFields['nlx_use_configurator_for_listing_size_preview'] %}
+                    {% set groupIdentifier = [product.id, group.id]|join('-') %}
+                    <div class="sas-product-configurator-group {% if hideOnListing %}sas-product-configurator-group-d-none{% endif %}">
+                        {% if group.displayType == 'select' %}
+                            {% sw_include '@Storefront/storefront/component/product/card/group/box-card-group-select.html.twig' %}
+                        {% else %}
+                            {% sw_include '@Storefront/storefront/component/product/card/group/box-card-group-input.html.twig' %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+
 {% block component_product_box_variant_characteristics %}
     {{ parent() }}
 

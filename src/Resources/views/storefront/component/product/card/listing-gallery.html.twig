@@ -1,0 +1,27 @@
+<div class="slider-container">
+    <div class="slider-controls">
+        <button class="previous">
+            {% sw_icon 'arrow-head-left' %}
+        </button>
+        <button class="next">
+            {% sw_icon 'arrow-head-right' %}
+        </button>
+    </div>
+    <div class="list-slider" data-link="{{ seoUrl('frontend.detail.page', { productId: product.id }) }}">
+        {% if product.media.media.count > 0 %}
+            {% for media in product.media.media %}
+                {% sw_thumbnails 'gallery-slider-image-thumbnails' with {
+                    media: media,
+                    attributes: {
+                        class: 'tns-lazy-img',
+                    },
+                } %}
+            {% endfor %}
+        {% else %}
+            {% sw_icon 'placeholder' style {
+                size: 'fluid',
+                class: 'tns-item',
+            } %}
+        {% endif %}
+    </div>
+</div>

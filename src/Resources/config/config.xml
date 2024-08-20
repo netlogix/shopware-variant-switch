@@ -20,6 +20,13 @@
         </input-field>
 
         <input-field type="bool">
+            <name>showGalleryOnProductCard</name>
+            <label>Show the thumbnail gallery of the variant on the listing page.</label>
+            <label lang="de-DE">Bilder Gallery der Variante auf der Listingseite anzeigen</label>
+            <defaultValue>false</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
             <name>showOnOffCanvasCart</name>
             <label>Show on off-canvas cart</label>
             <label lang="de-DE">Auf dem Off-Canvas-Wagen anzeigen</label>
