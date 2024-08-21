@@ -18,6 +18,11 @@
     {% endif %}
 {% endblock %}
 
+{% block component_product_box_variant_characteristics %}
+    {% if config('SasVariantSwitch.config.showVariantConfigurationTitleOnListing') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
 
 {% block component_product_box_variant_characteristics %}
     {{ parent() }}

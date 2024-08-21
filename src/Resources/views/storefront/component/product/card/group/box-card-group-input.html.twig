@@ -1,6 +1,6 @@
 {% block component_product_box_configurator_group_select %}
     {% block component_product_box_configurator_group_title %}
-        {% if hideTitle is defined and hideTitle == true %}
+        {% if config('SasVariantSwitch.config.showVariantConfigurationPropertyGroupTitleOnListing') %}
             <div class="sas-product-configurator-group-title">
                 {% block component_product_box_configurator_group_select_title_text %}
                     {{ group.translated.name }}

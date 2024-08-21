@@ -27,6 +27,20 @@
         </input-field>
 
         <input-field type="bool">
+            <name>showVariantConfigurationTitleOnListing</name>
+            <label>Show the full configuration as title on the product card on listing.</label>
+            <label lang="de-DE">Volle Konfiguration als Text am Product auf der Listingseite anzeigen</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>showVariantConfigurationPropertyGroupTitleOnListing</name>
+            <label>Show the title of the property on the product card on the listing.</label>
+            <label lang="de-DE">Name der Eigentschaft am Produkt auf der Listingseite anzeigen.</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
             <name>showOnOffCanvasCart</name>
             <label>Show on off-canvas cart</label>
             <label lang="de-DE">Auf dem Off-Canvas-Wagen anzeigen</label>
