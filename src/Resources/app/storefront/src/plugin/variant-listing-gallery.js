@@ -10,8 +10,11 @@ export default class VariantListingGallery extends Plugin {
 
     initializeSlider() {
         if (this.slider) {
-           this.slider.destroy();
+            this.slider.destroy();
         }
+
+        this.el.querySelector('.list-slider,.icon-placeholder')
+            .addEventListener('click', this.handleArticleClick.bind(this));
 
         const sliderElement = this.el.querySelector('.list-slider');
         if (!sliderElement) {
@@ -31,9 +34,6 @@ export default class VariantListingGallery extends Plugin {
             nav: false,
             loop: false,
         });
-
-        this.el.querySelector('.list-slider')
-            .addEventListener('click', this.handleArticleClick.bind(this));
 
         return true;
     }
