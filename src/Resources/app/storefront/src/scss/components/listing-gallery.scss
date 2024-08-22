@@ -1,0 +1,60 @@
+.list-slider {
+  display: none;
+
+  &.tns-slider {
+    display: block;
+
+    .tns-item {
+      object-fit: contain;
+    }
+  }
+}
+
+.product-box {
+  .slider-container {
+    position: relative;
+    height: 100%;
+    cursor: pointer;
+
+    &:hover {
+      .slider-controls button {
+        opacity: 1;
+
+        &:disabled {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .slider-controls {
+      button {
+        position: absolute;
+        z-index: 100005000;
+        transform: translate(0, -50%);
+        top: 50%;
+        background: #fff;
+        height: 3rem;
+        width: 1.5rem;
+        padding: 0;
+        border: 1px solid $sw-border-color;
+        opacity: 0;
+        transition: opacity 200ms ease;
+
+        .icon {
+          width: 0.8125rem;
+          height: 0.8125rem;
+        }
+
+        &.previous {
+          left: 0;
+          border-radius: 0 $border-radius $border-radius 0;
+        }
+
+        &.next {
+          right: 0;
+          border-radius: $border-radius 0 0 $border-radius;
+        }
+      }
+    }
+  }
+}

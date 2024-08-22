@@ -1,10 +1,12 @@
 {% block component_product_box_configurator_group_select %}
     {% block component_product_box_configurator_group_title %}
-        <div class="sas-product-configurator-group-title">
-            {% block component_product_box_configurator_group_select_title_text %}
-                {{ group.translated.name }}
-            {% endblock %}
-        </div>
+        {% if config('SasVariantSwitch.config.showVariantConfigurationPropertyGroupTitleOnListing') %}
+            <div class="sas-product-configurator-group-title">
+                {% block component_product_box_configurator_group_select_title_text %}
+                    {{ group.translated.name }}
+                {% endblock %}
+            </div>
+        {% endif %}
     {% endblock %}
 
     {% block component_product_box_configurator_options %}

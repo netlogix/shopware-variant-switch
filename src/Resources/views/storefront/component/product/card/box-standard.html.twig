@@ -1,7 +1,29 @@
 {% sw_extends '@Storefront/storefront/component/product/card/box-standard.html.twig' %}
 
+{% block component_product_box_image %}
+    {% if config('SasVariantSwitch.config.showGalleryOnProductCard') %}
+        {% block component_product_details_variant_switch_gallery %}
+            {% if product.media.count > 0 %}
+                {% sw_include '@Storefront/storefront/component/product/card/listing-gallery.html.twig' %}
+            {% else %}
+                {% sw_icon 'placeholder' style {
+                    size: 'fluid',
+                    class: 'tns-item',
+                    attributes: {
+                        'data-link': seoUrl('frontend.detail.page', { productId: product.id }),
+                    }
+                } %}
+            {% endif %}
+        {% endblock %}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {% block component_product_box_variant_characteristics %}
-    {{ parent() }}
+    {% if config('SasVariantSwitch.config.showVariantConfigurationTitleOnListing') %}
+        {{ parent() }}
+    {% endif %}
 
     {% if config('SasVariantSwitch.config.showOnProductCard') %}
         {% block page_product_detail_configurator_groups %}

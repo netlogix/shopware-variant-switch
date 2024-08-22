@@ -18,6 +18,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
 
+        <service id="SasVariantSwitch\Subscriber\ProductListingSubscriber">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <service id="SasVariantSwitch\Subscriber\CartPageLoadedSubscriber">
             <argument type="service" id="sales_channel.product.repository"/>
             <argument type="service" id="SasVariantSwitch\Storefront\Page\ProductListingConfigurationLoader"/>
