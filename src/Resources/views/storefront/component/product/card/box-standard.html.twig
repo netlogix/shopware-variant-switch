@@ -2,6 +2,11 @@
 
 {% block component_product_box_image %}
     {% if config('SasVariantSwitch.config.showGalleryOnProductCard') %}
+        {% sw_include '@Storefront/storefront/component/product/card/wishlist.html.twig' with {
+            appearance: 'circle',
+            productId: id
+        } %}
+
         {% block component_product_details_variant_switch_gallery %}
             {% if product.media.count > 0 %}
                 {% sw_include '@Storefront/storefront/component/product/card/listing-gallery.html.twig' %}
