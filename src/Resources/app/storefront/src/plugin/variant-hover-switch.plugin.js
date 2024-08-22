@@ -15,10 +15,11 @@ export default class VariantHoverSwitchPlugin extends Plugin {
 
     init() {
         this._httpClient = new HttpClient();
-        this._radioFields = DomAccess.querySelectorAll(this.el, this.options.radioFieldSelector, false);
-        this._selectFields = DomAccess.querySelectorAll(this.el, this.options.selectFieldSelector, false);
 
         this._productBox = this.el.closest('.product-box');
+        this._radioFields = DomAccess.querySelectorAll(this._productBox, this.options.radioFieldSelector, false);
+        this._selectFields = DomAccess.querySelectorAll(this._productBox, this.options.selectFieldSelector, false);
+
         window.variantResponseCached = window.variantResponseCached || {};
         this._hoveringValue = null;
 
