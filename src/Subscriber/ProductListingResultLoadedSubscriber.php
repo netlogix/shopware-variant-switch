@@ -5,7 +5,10 @@ namespace SasVariantSwitch\Subscriber;
 use SasVariantSwitch\SasVariantSwitch;
 use Shopware\Core\Content\Product\Events\ProductListingResultEvent;
 use Shopware\Core\Content\Product\ProductCollection;
+use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductCollection;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Shopware\Storefront\Page\Wishlist\WishlistPageLoadedEvent;
+use Shopware\Storefront\Pagelet\Wishlist\GuestWishlistPageletLoadedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use SasVariantSwitch\Storefront\Event\ProductBoxLoadedEvent;
 use SasVariantSwitch\Storefront\Page\ProductListingConfigurationLoader;
@@ -33,6 +36,12 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
             ProductBoxLoadedEvent::class => [
                 ['handleProductBoxLoadedRequest', 201],
             ],
+            GuestWishlistPageletLoadedEvent::class => [
+                ['handleGuestWishlistPageLoadedEvent', 201],
+            ],
+            WishlistPageLoadedEvent::class => [
+                ['handleWishlistPageLoadedEvent', 201],
+            ],
         ];
     }
 
@@ -59,5 +68,34 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
         }
 
         $this->listingConfigurationLoader->loadListing(new ProductCollection([$event->getProduct()]), $context);
+    }
+
+
+    public function handleGuestWishlistPageLoadedEvent(GuestWishlistPageletLoadedEvent $event): void
+    {
+        $context = $event->getSalesChannelContext();
+
+        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_PRODUCT_CARD, $context->getSalesChannelId())) {
+            return;
+        }
+
+        /* @var SalesChannelProductCollection $products */
+        $products = $event->getPagelet()->getSearchResult()->getProducts();
+
+        $this->listingConfigurationLoader->loadListing($products, $context);
+    }
+
+    public function handleWishlistPageLoadedEvent (WishlistPageLoadedEvent $event): void
+    {
+        $context = $event->getSalesChannelContext();
+
+        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_PRODUCT_CARD, $context->getSalesChannelId())) {
+            return;
+        }
+
+        /* @var SalesChannelProductCollection $products */
+        $products = $event->getPage()->getWishlist()->getProductListing()->getEntities();
+
+        $this->listingConfigurationLoader->loadListing($products, $context);
     }
 }
