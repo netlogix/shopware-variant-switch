@@ -9,7 +9,7 @@ if (window.sasShowOnProductCard) {
 }
 
 if (window.sasShowGalleryOnListingPage) {
-    PluginManager.register('VariantListingGallery', VariantListingGallery, '.product-box.box-standard');
+    PluginManager.register('VariantListingGallery', VariantListingGallery, '.product-box');
 }
 
 if (window.sasShowOnOffCanvasCart) {
