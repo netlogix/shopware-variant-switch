@@ -40,6 +40,12 @@
             <defaultValue>true</defaultValue>
         </input-field>
 
+        <input-field>
+            <name>showOnWishlistPage</name>
+            <label>Show on wishlist page</label>
+            <label lang="de-DE">Auf der Wunschlisten-Seite anzeigen</label>
+        </input-field>
+
         <input-field type="bool">
             <name>showOnOffCanvasCart</name>
             <label>Show on off-canvas cart</label>
