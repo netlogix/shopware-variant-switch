@@ -75,7 +75,7 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
     {
         $context = $event->getSalesChannelContext();
 
-        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_PRODUCT_CARD, $context->getSalesChannelId())) {
+        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_WISHLIST_PAGE, $context->getSalesChannelId())) {
             return;
         }
 
@@ -89,7 +89,7 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
     {
         $context = $event->getSalesChannelContext();
 
-        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_PRODUCT_CARD, $context->getSalesChannelId())) {
+        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_WISHLIST_PAGE, $context->getSalesChannelId())) {
             return;
         }
 

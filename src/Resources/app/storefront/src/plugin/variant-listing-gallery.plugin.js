@@ -1,7 +1,7 @@
 import Plugin from 'src/plugin-system/plugin.class';
 import {tns} from 'tiny-slider';
 
-export default class VariantListingGallery extends Plugin {
+export default class VariantListingGalleryPlugin extends Plugin {
     slider = null;
 
     _init() {

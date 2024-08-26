@@ -11,6 +11,18 @@
     window.sasShowGalleryOnListingPage = true;
     {% endif %}
 
+    {% if config('SasVariantSwitch.config.showVariantConfigurationTitleOnListing') %}
+    window.sasShowVariantConfigurationTitleOnListing = true;
+    {% endif %}
+
+    {% if config('SasVariantSwitch.config.showVariantConfigurationPropertyGroupTitleOnListing') %}
+    window.sasShowVariantConfigurationPropertyGroupTitleOnListing = true;
+    {% endif %}
+
+    {% if config('SasVariantSwitch.config.showOnWishlistPage') %}
+    window.sasShowOnWishlistPage = true;
+    {% endif %}
+
     {% if config('SasVariantSwitch.config.showOnOffCanvasCart') %}
     window.sasShowOnOffCanvasCart = true;
     {% endif %}

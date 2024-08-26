@@ -9,3 +9,7 @@
         {{ parent() }}
     {% endblock %}
 {% endblock %}
+
+{# We want to remove the "X" Button but cant't remove the form tag since it breaks the wishlist #}
+{% block component_product_wishlist_remove_submit %}
+{% endblock %}
