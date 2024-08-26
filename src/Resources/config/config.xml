@@ -40,7 +40,7 @@
             <defaultValue>true</defaultValue>
         </input-field>
 
-        <input-field>
+        <input-field type="bool">
             <name>showOnWishlistPage</name>
             <label>Show on wishlist page</label>
             <label lang="de-DE">Auf der Wunschlisten-Seite anzeigen</label>
