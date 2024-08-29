@@ -6,7 +6,7 @@ export default class WishlistExtensionPlugin extends Plugin {
         plugin.$emitter.subscribe(
             'Wishlist/onProductRemoved',
             () => {
-                console.log('Product removed from wishlist with window.PluginManager.getPlugin');
+               
                 window.location.reload();
             }
         );
