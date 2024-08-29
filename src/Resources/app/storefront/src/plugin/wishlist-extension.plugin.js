@@ -6,7 +6,6 @@ export default class WishlistExtensionPlugin extends Plugin {
         plugin.$emitter.subscribe(
             'Wishlist/onProductRemoved',
             () => {
-               
                 window.location.reload();
             }
         );
