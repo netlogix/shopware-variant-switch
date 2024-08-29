@@ -18,5 +18,5 @@ if (window.sasShowOnOffCanvasCart) {
 }
 
 if (window.sasShowOnWishlistPage) {
-    PluginManager.register('SasWishlistExtension', WishlistExtensionPlugin, '.wishlist-page');
+    PluginManager.register('SasWishlistExtension', WishlistExtensionPlugin, '[data-wishlist-storage]');
 }
