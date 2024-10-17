@@ -1,0 +1,11 @@
+{% sw_extends '@Storefront/storefront/component/product/card/box-minimal.html.twig' %}
+
+{% block page_product_detail_configurator_groups %}
+    {% set variantHoverSwitchOptions = {
+        cardType: 'minimal'
+    } %}
+
+    {% block component_offcanvas_product_details_variant_switch %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}
