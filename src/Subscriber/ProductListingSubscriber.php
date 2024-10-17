@@ -3,6 +3,7 @@
 namespace SasVariantSwitch\Subscriber;
 
 use Shopware\Core\Content\Product\Events\ProductListingCriteriaEvent;
+use Shopware\Core\Content\Product\Events\ProductSearchCriteriaEvent;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Storefront\Page\Wishlist\WishListPageProductCriteriaEvent;
 use Shopware\Storefront\Pagelet\Wishlist\GuestWishListPageletProductCriteriaEvent;
@@ -16,10 +17,11 @@ class ProductListingSubscriber implements EventSubscriberInterface
             ProductListingCriteriaEvent::class => 'onProductListingCriteria',
             WishListPageProductCriteriaEvent::class => 'onProductListingCriteria',
             GuestWishListPageletProductCriteriaEvent::class => 'onProductListingCriteria',
+            ProductSearchCriteriaEvent::class => 'onProductListingCriteria',
         ];
     }
 
-    public function onProductListingCriteria(ProductListingCriteriaEvent|WishListPageProductCriteriaEvent|GuestWishListPageletProductCriteriaEvent $event): void
+    public function onProductListingCriteria(ProductListingCriteriaEvent|WishListPageProductCriteriaEvent|GuestWishListPageletProductCriteriaEvent|ProductSearchCriteriaEvent $event): void
     {
         $event->getCriteria()
             ->addAssociation('media')

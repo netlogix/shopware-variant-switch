@@ -4,9 +4,11 @@ namespace SasVariantSwitch\Subscriber;
 
 use SasVariantSwitch\SasVariantSwitch;
 use Shopware\Core\Content\Product\Events\ProductListingResultEvent;
+use Shopware\Core\Content\Product\Events\ProductSearchResultEvent;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductCollection;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Shopware\Storefront\Page\Search\SearchPageLoadedEvent;
 use Shopware\Storefront\Page\Wishlist\WishlistPageLoadedEvent;
 use Shopware\Storefront\Pagelet\Wishlist\GuestWishlistPageletLoadedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,6 +43,9 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
             ],
             WishlistPageLoadedEvent::class => [
                 ['handleWishlistPageLoadedEvent', 201],
+            ],
+            SearchPageLoadedEvent::class => [
+                ['handleSearchPageLoadedEvent', 201],
             ],
         ];
     }
@@ -95,6 +100,20 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
 
         /* @var SalesChannelProductCollection $products */
         $products = $event->getPage()->getWishlist()->getProductListing()->getEntities();
+
+        $this->listingConfigurationLoader->loadListing($products, $context);
+    }
+
+    public function handleSearchPageLoadedEvent(SearchPageLoadedEvent $event): void
+    {
+        $context = $event->getSalesChannelContext();
+
+        if (!$this->systemConfigService->getBool(SasVariantSwitch::SHOW_ON_SEARCH_RESULT_PAGE, $context->getSalesChannelId())) {
+            return;
+        }
+
+        /* @var SalesChannelProductCollection $products */
+        $products = $event->getPage()->getListing()->getEntities();
 
         $this->listingConfigurationLoader->loadListing($products, $context);
     }

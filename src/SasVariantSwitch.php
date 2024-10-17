@@ -15,4 +15,5 @@ class SasVariantSwitch extends Plugin
     public const SHOW_VARIANT_CONFIGURATION_TITLE_ON_LISTING = 'SasVariantSwitch.config.showVariantConfigurationTitleOnListing';
     public const SHOW_VARIANT_CONFIGURATION_PROPERTY_GROUP_TITLE_ON_LISTING = 'SasVariantSwitch.config.showVariantConfigurationPropertyGroupTitleOnListing';
     public const SHOW_ON_WISHLIST_PAGE = 'SasVariantSwitch.config.showOnWishlistPage';
+    public const SHOW_ON_SEARCH_RESULT_PAGE = 'SasVariantSwitch.config.showOnSearchResultPage';
 }

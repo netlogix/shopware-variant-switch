@@ -67,5 +67,12 @@
             <defaultValue>true</defaultValue>
         </input-field>
 
+        <input-field type="bool">
+            <name>showOnSearchResultPage</name>
+            <label>Show on search result page</label>
+            <label lang="de-DE">Auf der Suchergebnisseite anzeigen</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
     </card>
 </config>
