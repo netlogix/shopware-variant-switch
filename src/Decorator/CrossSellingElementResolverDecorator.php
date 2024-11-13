@@ -29,7 +29,6 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
         #[AutowireDecorated]
         private readonly CmsElementResolverInterface $inner,
         private readonly ProductListingConfigurationLoader $listingConfigurationLoader,
-        #[Autowire(service: ElementResolverHelper::class)]
         private readonly ElementResolverHelper $elementResolverHelper,
         #[Autowire(service: 'sales_channel.product.repository')]
         private readonly SalesChannelRepository $salesChannelProductRepository,

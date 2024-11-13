@@ -25,7 +25,6 @@ class ProductBoxElementResolverDecorator extends AbstractCmsElementResolver
         #[AutowireDecorated]
         private readonly CmsElementResolverInterface $inner,
         private readonly ProductListingConfigurationLoader $listingConfigurationLoader,
-        #[Autowire(service: ElementResolverHelper::class)]
         private readonly ElementResolverHelper $elementResolverHelper,
     ) {
     }
