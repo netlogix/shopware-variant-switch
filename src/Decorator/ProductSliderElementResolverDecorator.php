@@ -15,7 +15,6 @@ use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Content\Product\Cms\ProductSliderCmsElementResolver;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
-use Symfony\Component\VarDumper\VarDumper;
 
 #[AsDecorator(decorates: ProductSliderCmsElementResolver::class)]
 class ProductSliderElementResolverDecorator extends AbstractCmsElementResolver

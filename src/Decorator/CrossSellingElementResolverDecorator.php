@@ -13,11 +13,6 @@ use Shopware\Core\Content\Cms\DataResolver\Element\CmsElementResolverInterface;
 use Shopware\Core\Content\Cms\DataResolver\Element\ElementDataCollection;
 use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Content\Product\Cms\CrossSellingCmsElementResolver;
-use Shopware\Core\Content\Product\ProductCollection;
-use Shopware\Core\Content\Product\ProductEntity;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 
@@ -29,7 +24,6 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
         private readonly CmsElementResolverInterface $inner,
         private readonly ProductListingConfigurationLoader $listingConfigurationLoader,
         private readonly ElementResolverHelper $elementResolverHelper,
-        private readonly EntityRepository $productRepository,
     ) {
     }
 
