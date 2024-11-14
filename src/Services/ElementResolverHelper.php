@@ -8,7 +8,6 @@ use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-use Shopware\Core\Framework\Struct\Struct;
 use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -37,10 +36,6 @@ class ElementResolverHelper
         return $criteriaCollection;
     }
 
-    /**
-     * @param Struct $data
-     * @return Struct
-     */
     public function convertResolveVariantProducts(?ProductCollection $products, SalesChannelContext $context): ?ProductCollection
     {
         if ($products === null) {
@@ -58,11 +53,26 @@ class ElementResolverHelper
         }));
     }
 
+    public function reloadProducts(ProductCollection $products, SalesChannelContext $context): ProductCollection
+    {
+        if ($products->count() === 0) {
+            return $products;
+        }
+
+        $criteria = new Criteria(array_values(
+            $products->map(fn(ProductEntity $product) => $product->getId())
+        ));
+        $criteria->addAssociations(['options', 'manufacturer', 'media']);
+
+        return $this->salesChannelProductRepository->search($criteria, $context)
+            ->getEntities();
+    }
+
     private function getChildProducts(string $productId, SalesChannelContext $context): EntitySearchResult
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('parentId', $productId));
-        $criteria->addAssociations(['options', 'manufacturer', 'media']);
+        $criteria->addAssociations(['options', 'manufacturer', 'media', 'cover']);
         return $this->salesChannelProductRepository->search($criteria, $context);
     }
 }

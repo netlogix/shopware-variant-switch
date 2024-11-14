@@ -15,6 +15,7 @@ use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Content\Product\Cms\ProductSliderCmsElementResolver;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
+use Symfony\Component\VarDumper\VarDumper;
 
 #[AsDecorator(decorates: ProductSliderCmsElementResolver::class)]
 class ProductSliderElementResolverDecorator extends AbstractCmsElementResolver
@@ -45,6 +46,12 @@ class ProductSliderElementResolverDecorator extends AbstractCmsElementResolver
         $context = $resolverContext->getSalesChannelContext();
         $data = $slot->getData();
         $products = $data?->getProducts();
+        $config = $slot->getFieldConfig();
+        $productConfig = $config->get('products');
+
+        if ($productConfig->isProductStream() && $productConfig->getValue()) {
+            $products = $this->elementResolverHelper->reloadProducts($products, $context);
+        }
 
         $products = $this->elementResolverHelper->convertResolveVariantProducts($products, $context);
         $this->listingConfigurationLoader->loadListing($products, $context);

@@ -58,26 +58,13 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
             $products = $crossSelling->getProducts();
 
             // need to reload products because the cross selling loader does not load media fields etc.
-            $products = $this->reloadProducts($products, $context);
+            $products = $this->elementResolverHelper->reloadProducts($products, $context);
             $products = $this->elementResolverHelper->convertResolveVariantProducts($products, $context);
             $this->listingConfigurationLoader->loadListing($products, $context);
             $crossSelling->setProducts($products);
         }
         $data->setCrossSellings($crossSellings);
         $slot->setData($data);
-    }
-
-    private function reloadProducts(ProductCollection $products, SalesChannelContext $context): ProductCollection
-    {
-        if ($products->count() === 0) {
-            return $products;
-        }
-
-        $criteria = new Criteria([$products->map(fn(ProductEntity $product) => $product->getId())]);
-        $criteria->addAssociations(['options', 'manufacturer', 'media']);
-
-        return $this->productRepository->search($criteria, $context->getContext())
-            ->getEntities();
     }
 }
 
