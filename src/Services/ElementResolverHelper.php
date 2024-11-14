@@ -3,8 +3,8 @@
 namespace SasVariantSwitch\Services;
 
 use Shopware\Core\Content\Cms\DataResolver\CriteriaCollection;
-use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductCollection;
-use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
+use Shopware\Core\Content\Product\ProductCollection;
+use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -41,13 +41,13 @@ class ElementResolverHelper
      * @param Struct $data
      * @return Struct
      */
-    public function convertResolveVariantProducts(?SalesChannelProductCollection $products, SalesChannelContext $context): ?SalesChannelProductCollection
+    public function convertResolveVariantProducts(?ProductCollection $products, SalesChannelContext $context): ?ProductCollection
     {
         if ($products === null) {
             return null;
         }
 
-        return new SalesChannelProductCollection($products->map(function(SalesChannelProductEntity $product) use ($context) {
+        return new ProductCollection($products->map(function(ProductEntity $product) use ($context) {
             if ($product->getParentId() === null && $product->getConfiguratorSettings() === null) {
                 $children = $this->getChildProducts($product->getId(), $context);
                 if ($children->count() > 0) {

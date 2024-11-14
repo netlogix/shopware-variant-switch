@@ -6,8 +6,8 @@ use Doctrine\DBAL\Connection;
 use Shopware\Core\Content\Product\Aggregate\ProductConfiguratorSetting\ProductConfiguratorSettingCollection;
 use Shopware\Core\Content\Product\Aggregate\ProductConfiguratorSetting\ProductConfiguratorSettingEntity;
 use Shopware\Core\Content\Product\ProductCollection;
+use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Content\Product\SalesChannel\Detail\AvailableCombinationResult;
-use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
 use Shopware\Core\Content\Property\Aggregate\PropertyGroupOption\PropertyGroupOptionCollection;
 use Shopware\Core\Content\Property\Aggregate\PropertyGroupOption\PropertyGroupOptionEntity;
 use Shopware\Core\Content\Property\PropertyGroupCollection;
@@ -38,7 +38,7 @@ class ProductListingConfigurationLoader
     {
         $settings = $this->fetchSettings($products, $context->getContext());
 
-        $productIds = array_filter($products->map(function (SalesChannelProductEntity $product) {
+        $productIds = array_filter($products->map(function (ProductEntity $product) {
             return $product->getParentId() ?? $product->getId();
         }));
 
@@ -47,7 +47,7 @@ class ProductListingConfigurationLoader
             return;
         }
 
-        /** @var SalesChannelProductEntity $product */
+        /** @var ProductEntity $product */
         foreach ($products as $product) {
             $productSettings = $this->loadSettings(clone $settings);
 
@@ -156,7 +156,7 @@ class ProductListingConfigurationLoader
     private function fetchSettings(ProductCollection $products, Context $context): ProductConfiguratorSettingCollection
     {
         $criteria = (new Criteria())->addFilter(
-            new EqualsAnyFilter('productId', $products->map(function (SalesChannelProductEntity $product) {
+            new EqualsAnyFilter('productId', $products->map(function (ProductEntity $product) {
                 return $product->getParentId() ?? $product->getId();
             }))
         );
@@ -240,7 +240,7 @@ class ProductListingConfigurationLoader
         return $allSettings;
     }
 
-    private function sortSettings(?array $groups, SalesChannelProductEntity $product): PropertyGroupCollection
+    private function sortSettings(?array $groups, ProductEntity $product): PropertyGroupCollection
     {
         if (!$groups) {
             return new PropertyGroupCollection();
@@ -328,7 +328,7 @@ class ProductListingConfigurationLoader
         return null;
     }
 
-    private function buildCurrentOptions(SalesChannelProductEntity $product, PropertyGroupCollection $groups): array
+    private function buildCurrentOptions(ProductEntity $product, PropertyGroupCollection $groups): array
     {
         $keyMap = $groups->getOptionIdMap();
 

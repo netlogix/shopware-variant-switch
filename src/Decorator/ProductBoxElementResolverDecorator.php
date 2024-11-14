@@ -13,9 +13,8 @@ use Shopware\Core\Content\Cms\DataResolver\Element\CmsElementResolverInterface;
 use Shopware\Core\Content\Cms\DataResolver\Element\ElementDataCollection;
 use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Content\Product\Cms\ProductBoxCmsElementResolver;
-use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductCollection;
+use Shopware\Core\Content\Product\ProductCollection;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 
 #[AsDecorator(decorates: ProductBoxCmsElementResolver::class)]
@@ -52,7 +51,7 @@ class ProductBoxElementResolverDecorator extends AbstractCmsElementResolver
             return;
         }
 
-        $products = $this->elementResolverHelper->convertResolveVariantProducts(new SalesChannelProductCollection([$product]), $context);
+        $products = $this->elementResolverHelper->convertResolveVariantProducts(new ProductCollection([$product]), $context);
         $this->listingConfigurationLoader->loadListing($products, $context);
         $data->setProduct($products->first());
         $slot->setData($data);
