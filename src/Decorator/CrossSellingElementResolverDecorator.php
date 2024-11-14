@@ -13,13 +13,12 @@ use Shopware\Core\Content\Cms\DataResolver\Element\CmsElementResolverInterface;
 use Shopware\Core\Content\Cms\DataResolver\Element\ElementDataCollection;
 use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Content\Product\Cms\CrossSellingCmsElementResolver;
-use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductCollection;
-use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
+use Shopware\Core\Content\Product\ProductCollection;
+use Shopware\Core\Content\Product\ProductEntity;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 
 #[AsDecorator(decorates: CrossSellingCmsElementResolver::class)]
@@ -30,8 +29,7 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
         private readonly CmsElementResolverInterface $inner,
         private readonly ProductListingConfigurationLoader $listingConfigurationLoader,
         private readonly ElementResolverHelper $elementResolverHelper,
-        #[Autowire(service: 'sales_channel.product.repository')]
-        private readonly SalesChannelRepository $salesChannelProductRepository,
+        private readonly EntityRepository $productRepository,
     ) {
     }
 
@@ -69,16 +67,16 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
         $slot->setData($data);
     }
 
-    private function reloadProducts(SalesChannelProductCollection $products, SalesChannelContext $context): SalesChannelProductCollection
+    private function reloadProducts(ProductCollection $products, SalesChannelContext $context): ProductCollection
     {
         if ($products->count() === 0) {
             return $products;
         }
 
-        $criteria = new Criteria([$products->map(fn(SalesChannelProductEntity $product) => $product->getId())]);
+        $criteria = new Criteria([$products->map(fn(ProductEntity $product) => $product->getId())]);
         $criteria->addAssociations(['options', 'manufacturer', 'media']);
 
-        return $this->salesChannelProductRepository->search($criteria, $context)
+        return $this->productRepository->search($criteria, $context->getContext())
             ->getEntities();
     }
 }
