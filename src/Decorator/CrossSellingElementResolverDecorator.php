@@ -13,11 +13,6 @@ use Shopware\Core\Content\Cms\DataResolver\Element\CmsElementResolverInterface;
 use Shopware\Core\Content\Cms\DataResolver\Element\ElementDataCollection;
 use Shopware\Core\Content\Cms\DataResolver\ResolverContext\ResolverContext;
 use Shopware\Core\Content\Product\Cms\CrossSellingCmsElementResolver;
-use Shopware\Core\Content\Product\ProductCollection;
-use Shopware\Core\Content\Product\ProductEntity;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
 
@@ -29,7 +24,6 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
         private readonly CmsElementResolverInterface $inner,
         private readonly ProductListingConfigurationLoader $listingConfigurationLoader,
         private readonly ElementResolverHelper $elementResolverHelper,
-        private readonly EntityRepository $productRepository,
     ) {
     }
 
@@ -58,26 +52,13 @@ class CrossSellingElementResolverDecorator extends AbstractCmsElementResolver
             $products = $crossSelling->getProducts();
 
             // need to reload products because the cross selling loader does not load media fields etc.
-            $products = $this->reloadProducts($products, $context);
+            $products = $this->elementResolverHelper->reloadProducts($products, $context);
             $products = $this->elementResolverHelper->convertResolveVariantProducts($products, $context);
             $this->listingConfigurationLoader->loadListing($products, $context);
             $crossSelling->setProducts($products);
         }
         $data->setCrossSellings($crossSellings);
         $slot->setData($data);
-    }
-
-    private function reloadProducts(ProductCollection $products, SalesChannelContext $context): ProductCollection
-    {
-        if ($products->count() === 0) {
-            return $products;
-        }
-
-        $criteria = new Criteria([$products->map(fn(ProductEntity $product) => $product->getId())]);
-        $criteria->addAssociations(['options', 'manufacturer', 'media']);
-
-        return $this->productRepository->search($criteria, $context->getContext())
-            ->getEntities();
     }
 }
 

@@ -45,6 +45,12 @@ class ProductSliderElementResolverDecorator extends AbstractCmsElementResolver
         $context = $resolverContext->getSalesChannelContext();
         $data = $slot->getData();
         $products = $data?->getProducts();
+        $config = $slot->getFieldConfig();
+        $productConfig = $config->get('products');
+
+        if ($productConfig->isProductStream() && $productConfig->getValue()) {
+            $products = $this->elementResolverHelper->reloadProducts($products, $context);
+        }
 
         $products = $this->elementResolverHelper->convertResolveVariantProducts($products, $context);
         $this->listingConfigurationLoader->loadListing($products, $context);

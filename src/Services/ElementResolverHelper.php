@@ -5,10 +5,10 @@ namespace SasVariantSwitch\Services;
 use Shopware\Core\Content\Cms\DataResolver\CriteriaCollection;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Content\Product\ProductEntity;
+use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-use Shopware\Core\Framework\Struct\Struct;
 use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -37,10 +37,6 @@ class ElementResolverHelper
         return $criteriaCollection;
     }
 
-    /**
-     * @param Struct $data
-     * @return Struct
-     */
     public function convertResolveVariantProducts(?ProductCollection $products, SalesChannelContext $context): ?ProductCollection
     {
         if ($products === null) {
@@ -49,20 +45,37 @@ class ElementResolverHelper
 
         return new ProductCollection($products->map(function(ProductEntity $product) use ($context) {
             if ($product->getParentId() === null && $product->getConfiguratorSettings() === null) {
-                $children = $this->getChildProducts($product->getId(), $context);
-                if ($children->count() > 0) {
-                    return $children->first();
+                $firstChild = $this->getFirstChildProduct($product->getId(), $context);
+                if ($firstChild !== null) {
+                    return $firstChild;
                 }
             }
             return $product;
         }));
     }
 
-    private function getChildProducts(string $productId, SalesChannelContext $context): EntitySearchResult
+    public function reloadProducts(ProductCollection $products, SalesChannelContext $context): ProductCollection
+    {
+        if ($products->count() === 0) {
+            return $products;
+        }
+
+        $criteria = new Criteria(array_values(
+            $products->map(fn(ProductEntity $product) => $product->getId())
+        ));
+        $criteria->addAssociations(['options', 'manufacturer', 'media']);
+
+        return $this->salesChannelProductRepository->search($criteria, $context)
+            ->getEntities();
+    }
+
+    private function getFirstChildProduct(string $productId, SalesChannelContext $context): ?SalesChannelProductEntity
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('parentId', $productId));
-        $criteria->addAssociations(['options', 'manufacturer', 'media']);
-        return $this->salesChannelProductRepository->search($criteria, $context);
+        $criteria->addAssociations(['options', 'manufacturer', 'media', 'cover']);
+        $criteria->setLimit(1);
+        return $this->salesChannelProductRepository->search($criteria, $context)
+            ->first();
     }
 }
