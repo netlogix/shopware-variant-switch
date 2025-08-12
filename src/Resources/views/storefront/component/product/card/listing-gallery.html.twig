@@ -17,11 +17,11 @@
 
         {% block variant_switch_gallery_slider_slide %}
             <div class="list-slider" data-link="{{ seoUrl('frontend.detail.page', { productId: product.id }) }}">
-                {% if product.media.media.count > 0 %}
-                    {% for media in product.media.media %}
+                {% if product.media.count > 0 %}
+                    {% for media in product.media|sort((a, b) => a.position <=> b.position) %}
                         {% block variant_switch_gallery_slider_slide_thumbnail %}
                             {% sw_thumbnails 'gallery-slider-image-thumbnails' with {
-                                media: media,
+                                media: media.media,
                                 attributes: {
                                     class: 'tns-lazy-img',
                                 },
