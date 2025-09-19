@@ -2,6 +2,7 @@
 
 namespace SasVariantSwitch\Storefront\Controller;
 
+use SasVariantSwitch\Enum\ProductBoxTypesEnum;
 use Shopware\Core\Checkout\Cart\Cart;
 use Shopware\Core\Checkout\Cart\Error\Error;
 use Shopware\Core\Checkout\Cart\Exception\LineItemNotFoundException;
@@ -132,8 +133,11 @@ class VariantSwitchController extends StorefrontController
     public function switchVariant(string $productId, Request $request, SalesChannelContext $context): Response
     {
         $switchedOption = $request->query->has('switched') ? (string) $request->query->get('switched') : null;
-
-        $cardType = $request->query->has('cardType') ? (string) $request->query->get('cardType') : 'standard';
+        $cardTypeEnum = ProductBoxTypesEnum::tryFrom((string) $request->get('cardType', 'standard'));
+        $cardType = 'standard';
+        if ($cardTypeEnum !== null) {
+            $cardType = $cardTypeEnum->value;
+        }
 
         $options = (string) $request->query->get('options');
         $newOptions = $options !== '' ? json_decode($options, true) : [];
