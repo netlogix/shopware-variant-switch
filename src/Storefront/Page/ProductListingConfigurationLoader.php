@@ -113,13 +113,13 @@ class ProductListingConfigurationLoader
         $query->setParameter('versionId', Uuid::fromHexToBytes($context->getVersionId()));
         $query->setParameter('active', true);
 
-        $query->select([
+        $query->select(
             'LOWER(HEX(product.id))',
             'LOWER(HEX(product.parent_id)) as parent_id',
             'product.option_ids as options',
             'product.product_number as productNumber',
             'product.available',
-        ]);
+        );
 
         $combinations = $query->execute()->fetchAll();
         $combinations = FetchModeHelper::groupUnique($combinations);
