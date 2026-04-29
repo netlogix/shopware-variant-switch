@@ -121,7 +121,7 @@ class ProductListingConfigurationLoader
             'product.available',
         );
 
-        $combinations = $query->execute()->fetchAll();
+        $combinations = $query->executeQuery()->fetchAll();
         $combinations = FetchModeHelper::groupUnique($combinations);
 
         foreach ($combinations as $combination) {
