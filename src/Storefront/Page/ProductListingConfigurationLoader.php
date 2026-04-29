@@ -2,6 +2,7 @@
 
 namespace SasVariantSwitch\Storefront\Page;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Shopware\Core\Content\Product\Aggregate\ProductConfiguratorSetting\ProductConfiguratorSettingCollection;
 use Shopware\Core\Content\Product\Aggregate\ProductConfiguratorSetting\ProductConfiguratorSettingEntity;
@@ -108,7 +109,7 @@ class ProductListingConfigurationLoader
         $query->andWhere('IFNULL(product.active, parent.active) = :active');
         $query->andWhere('product.option_ids IS NOT NULL');
 
-        $query->setParameter('id', Uuid::fromHexToBytesList($productIds), Connection::PARAM_STR_ARRAY);
+        $query->setParameter('id', Uuid::fromHexToBytesList($productIds), ArrayParameterType::INTEGER);
         $query->setParameter('versionId', Uuid::fromHexToBytes($context->getVersionId()));
         $query->setParameter('active', true);
 
