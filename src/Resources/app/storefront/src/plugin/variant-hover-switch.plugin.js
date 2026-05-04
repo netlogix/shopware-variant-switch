@@ -3,7 +3,6 @@ import HttpClient from 'src/service/http-client.service';
 import ElementLoadingIndicatorUtil from 'src/utility/loading-indicator/element-loading-indicator.util';
 import DomAccess from 'src/helper/dom-access.helper';
 import Iterator from 'src/helper/iterator.helper';
-import queryString from 'query-string';
 
 export default class VariantHoverSwitchPlugin extends Plugin {
     static options = {
@@ -107,7 +106,7 @@ export default class VariantHoverSwitchPlugin extends Plugin {
 
         let url = DomAccess.getAttribute(element, this.options.urlAttribute);
 
-        url = url + '?' + queryString.stringify({ ...query });
+        url = url + '?' + new URLSearchParams({ ...query }).toString();
 
         if (window.variantResponseCached[url]) {
             if (this._productBox) {
