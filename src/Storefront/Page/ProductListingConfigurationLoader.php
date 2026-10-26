@@ -47,9 +47,13 @@ class ProductListingConfigurationLoader
             return;
         }
 
+        $settingsByProductId = $this->groupSettingsByProductId($settings);
+
         /** @var ProductEntity $product */
         foreach ($products as $product) {
-            $productSettings = $this->loadSettings(clone $settings);
+            $productSettings = $this->loadSettings(
+                $settingsByProductId[$product->getParentId()] ?? new ProductConfiguratorSettingCollection()
+            );
 
             if ($product->getConfiguratorSettings() !== null || !$product->getParentId() || empty($productSettings[$product->getParentId()])) {
                 $product->addExtension('groups', new PropertyGroupCollection());
@@ -151,6 +155,27 @@ class ProductListingConfigurationLoader
         }
 
         return $allCombinations;
+    }
+
+    /**
+     * Groups the flat settings by product id once per listing, so loadSettings() only
+     * processes the settings of a single product instead of the whole listing per product.
+     *
+     * @return array<string, ProductConfiguratorSettingCollection>
+     */
+    private function groupSettingsByProductId(ProductConfiguratorSettingCollection $settings): array
+    {
+        $grouped = [];
+
+        /** @var ProductConfiguratorSettingEntity $setting */
+        foreach ($settings as $setting) {
+            $grouped[$setting->getProductId()][] = $setting;
+        }
+
+        return array_map(
+            static fn (array $productSettings) => new ProductConfiguratorSettingCollection($productSettings),
+            $grouped
+        );
     }
 
     private function fetchSettings(ProductCollection $products, Context $context): ProductConfiguratorSettingCollection
