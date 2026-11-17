@@ -31,7 +31,7 @@ class ElementResolverHelper
         $criteriaCollection = new CriteriaCollection();
         foreach ($criteriaCollectionContent as $definition => $content) {
             $criteria = current($content);
-            $criteria->addAssociations(['options', 'manufacturer', 'media', 'cover']);
+            $criteria->addAssociations(['options', 'manufacturer', 'media.media', 'cover.media']);
             $criteriaCollection->add(current(array_keys($content)), $definition, $criteria);
         }
         return $criteriaCollection;
@@ -63,7 +63,7 @@ class ElementResolverHelper
         $criteria = new Criteria(array_values(
             $products->map(fn(ProductEntity $product) => $product->getId())
         ));
-        $criteria->addAssociations(['options', 'manufacturer', 'media']);
+        $criteria->addAssociations(['options', 'manufacturer', 'media.media']);
 
         return $this->salesChannelProductRepository->search($criteria, $context)
             ->getEntities();
@@ -73,7 +73,7 @@ class ElementResolverHelper
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('parentId', $productId));
-        $criteria->addAssociations(['options', 'manufacturer', 'media', 'cover']);
+        $criteria->addAssociations(['options', 'manufacturer', 'media.media', 'cover.media']);
         $criteria->setLimit(1);
         return $this->salesChannelProductRepository->search($criteria, $context)
             ->first();

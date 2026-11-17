@@ -24,7 +24,7 @@ class ProductListingSubscriber implements EventSubscriberInterface
     public function onProductListingCriteria(ProductListingCriteriaEvent|WishListPageProductCriteriaEvent|GuestWishListPageletProductCriteriaEvent|ProductSearchCriteriaEvent $event): void
     {
         $event->getCriteria()
-            ->addAssociation('media')
+            ->addAssociation('media.media')
             ->getAssociation('children.media')
             ->addSorting(new FieldSorting('position', FieldSorting::ASCENDING, true))
         ;

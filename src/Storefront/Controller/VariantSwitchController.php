@@ -162,7 +162,7 @@ class VariantSwitchController extends StorefrontController
             ->addAssociation('options.group')
             ->addAssociation('properties.group')
             ->addAssociation('mainCategories.category')
-            ->addAssociation('media');
+            ->addAssociation('media.media');
 
         $criteria->addExtension('sortings', new ProductSortingCollection());
 
